@@ -1,0 +1,429 @@
+:root {
+  --wa-primary: #00a884;
+  --wa-secondary: #111b21;
+  --wa-surface: #202c33;
+  --wa-text: #e9edef;
+  --wa-text-secondary: #8696a0;
+  --wa-sent: #005c4b;
+  --wa-received: #202c33;
+  --wa-border: #2a3942;
+  --wa-hover: #2a3942;
+  --wa-link: #53bdeb;
+  --wa-highlight: #ffffff;
+}
+
+body {
+  background-color: var(--wa-secondary);
+  color: var(--wa-text);
+}
+
+/* Text Colors */
+h1, h2, h3, h4, h5, h6 {
+  color: var(--wa-highlight);
+}
+
+p {
+  color: var(--wa-text);
+}
+
+/* Links */
+a {
+  color: var(--wa-link);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--wa-primary);
+  text-decoration: none;
+}
+
+/* Form Labels */
+label {
+  color: var(--wa-text);
+}
+
+/* Input Fields */
+.form-control {
+  background-color: var(--wa-surface);
+  border: 1px solid var(--wa-border);
+  color: var(--wa-highlight);
+  border-radius: 8px;
+  padding: 12px;
+}
+
+.form-control::placeholder {
+  color: var(--wa-text-secondary);
+}
+
+.form-control:focus {
+  background-color: var(--wa-surface);
+  border-color: var(--wa-primary);
+  color: var(--wa-highlight);
+  box-shadow: none;
+}
+
+/* Card Styles */
+.card {
+  background: var(--wa-surface);
+  border: 1px solid var(--wa-border);
+  border-radius: 8px;
+  color: var(--wa-highlight);
+  margin-bottom: 20px;
+}
+
+.card-title,
+.card h1,
+.card h2,
+.card h3,
+.card h4,
+.card h5,
+.card h6,
+.card p,
+.card span,
+.card-text {
+  color: var(--wa-highlight) !important;
+}
+
+.card hr {
+  border-color: var(--wa-border);
+}
+
+/* Navigation */
+.nav-link {
+  color: var(--wa-text) !important;
+  font-weight: 500;
+}
+
+.nav-link:hover {
+  color: var(--wa-primary) !important;
+}
+
+/* Buttons */
+.btn-whatsapp {
+  background-color: var(--wa-primary);
+  color: var(--wa-highlight);
+  font-weight: 600;
+}
+
+.btn-whatsapp:hover {
+  background-color: #008f6f;
+  color: var(--wa-highlight);
+}
+
+/* Chat Messages */
+.message-bubble {
+  max-width: 65%;
+  padding: 8px 12px;
+  border-radius: 8px;
+  margin-bottom: 4px;
+  position: relative;
+}
+
+.message-sent {
+  background: var(--wa-sent);
+  color: var(--wa-highlight);
+  margin-left: auto;
+}
+
+.message-received {
+  background: var(--wa-received);
+  color: var(--wa-text);
+}
+
+/* Footer */
+.footer-info-text {
+  color: var(--wa-text-secondary);
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--wa-surface);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--wa-border);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--wa-text-secondary);
+}
+
+/* Footer Styles */
+.footer-curve {
+  background: var(--wa-surface);
+  border-top: 1px solid var(--wa-border);
+}
+
+.footer-row-bottom {
+  background-color: var(--wa-surface) !important;
+}
+
+.brand-footer {
+  color: var(--wa-text-secondary);
+}
+
+.footer-curve ul li a {
+  color: var(--wa-text);
+}
+
+.footer-curve ul li a:hover {
+  color: var(--wa-primary);
+}
+
+/* Animation Keyframes */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* Apply animations to elements */
+.card {
+  animation: scaleIn 0.3s ease-out;
+}
+
+.message-bubble {
+  animation: fadeIn 0.3s ease-out;
+}
+
+.nav-link {
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.nav-link:hover {
+  transform: translateY(-2px);
+}
+
+.btn-whatsapp {
+  transition: all 0.2s ease;
+}
+
+.btn-whatsapp:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 168, 132, 0.2);
+}
+
+.chat-list-item {
+  animation: slideIn 0.3s ease-out;
+  transition: background-color 0.2s ease;
+}
+
+.chat-list-item:hover {
+  background-color: var(--wa-hover);
+}
+
+.form-control {
+  transition: all 0.2s ease;
+}
+
+.form-control:focus {
+  transform: translateY(-1px);
+}
+
+/* Login/Register form animations */
+.login-form, .register-form {
+  animation: scaleIn 0.4s ease-out;
+}
+
+/* Chat message animations */
+.message-sent {
+  animation: slideIn 0.3s ease-out;
+  transform-origin: right;
+}
+
+.message-received {
+  animation: slideIn 0.3s ease-out;
+  transform-origin: left;
+}
+
+/* Profile elements animation */
+.profile-section {
+  animation: fadeIn 0.4s ease-out;
+}
+
+/* Menu items animation */
+.menu-item {
+  transition: all 0.2s ease;
+}
+
+.menu-item:hover {
+  transform: translateX(5px);
+}
+
+/* Footer links animation */
+.footer-curve ul li a {
+  transition: all 0.2s ease;
+}
+
+.footer-curve ul li a:hover {
+  transform: translateY(-2px);
+  display: inline-block;
+}
+
+/* Account settings animations */
+.settings-section {
+  animation: fadeIn 0.4s ease-out;
+}
+
+/* Chat input animations */
+.chat-input {
+  transition: all 0.2s ease;
+}
+
+.chat-input:focus {
+  transform: translateY(-1px);
+}
+
+/* Loading animation */
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+.loading {
+  animation: pulse 1.5s infinite ease-in-out;
+}
+
+/* Notification animation */
+@keyframes slideDown {
+  from {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.notification {
+  animation: slideDown 0.3s ease-out forwards;
+}
+
+/* Date Picker Styles */
+input[type="date"] {
+  background-color: var(--wa-surface);
+  color: var(--wa-text);
+  border: 1px solid var(--wa-border);
+  border-radius: 8px;
+  padding: 12px;
+}
+
+/* Date picker calendar popup */
+::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+  opacity: 0.7;
+  cursor: pointer;
+}
+
+::-webkit-calendar-picker-indicator:hover {
+  opacity: 1;
+}
+
+/* Date picker dropdown panel */
+input[type="date"]::-webkit-datetime-edit {
+  color: var(--wa-text);
+}
+
+input[type="date"]::-webkit-datetime-edit-fields-wrapper {
+  color: var(--wa-text);
+}
+
+input[type="date"]::-webkit-datetime-edit-text {
+  color: var(--wa-text-secondary);
+}
+
+input[type="date"]::-webkit-datetime-edit-month-field,
+input[type="date"]::-webkit-datetime-edit-day-field,
+input[type="date"]::-webkit-datetime-edit-year-field {
+  color: var(--wa-text);
+}
+
+input[type="date"]::-webkit-inner-spin-button {
+  display: none;
+}
+
+input[type="date"]:focus {
+  border-color: var(--wa-primary);
+  outline: none;
+  box-shadow: none;
+}
+
+/* For Firefox */
+input[type="date"] {
+  appearance: none;
+  -moz-appearance: none;
+}
+
+/* For Edge */
+input[type="date"]::-ms-clear,
+input[type="date"]::-ms-reveal {
+  display: none;
+}
+
+/* Location Suggestions Styling */
+.location-input-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.suggestions-container {
+    position: absolute;
+    width: 100%;
+    max-height: 200px;
+    overflow-y: auto;
+    background-color: var(--wa-surface);
+    border: 1px solid var(--wa-border);
+    border-radius: 8px;
+    margin-top: 5px;
+    z-index: 1000;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.suggestion-item {
+    padding: 10px 15px;
+    cursor: pointer;
+    color: var(--wa-text);
+    border-bottom: 1px solid var(--wa-border);
+}
+
+.suggestion-item:hover {
+    background-color: var(--wa-hover);
+}
+
+.suggestion-item:last-child {
+    border-bottom: none;
+}

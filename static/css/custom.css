@@ -1,0 +1,16 @@
+.datepicker-panel > ul[data-view="months"] > li,
+.datepicker-panel > ul[data-view="years"] > li {
+    height: 60px !important;
+    background-color: #202C33;
+    color: #E9EDEF;
+}
+
+.datepicker-panel > ul > li:hover {
+    background-color: #E9EDEF;
+    color: #202C33;
+}
+.datepicker-panel>ul[data-view=week]>li,.datepicker-panel>ul[data-view=week]>li:hover {
+    background-color:#202C33;
+    cursor: default;
+    color:#E9EDEF;
+}

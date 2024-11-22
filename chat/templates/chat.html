@@ -1,0 +1,90 @@
+{% extends 'base.html' %} {% load static from static %} 
+<!--Required to access key and value in all_conversations loop-->
+{% load chatextras %} 
+{% block page_title %}Conversation Messages{% endblock %} {% block content %}
+
+<div class="whatsapp-container" style="background: var(--wa-secondary); display: flex;">
+    <!-- Chat List Sidebar -->
+    <div class="chat-list-sidebar" style="background: var(--wa-surface); border-right: 1px solid var(--wa-border); width: 300px; flex-shrink: 0;">
+        <div class="chat-list-header" style="background: var(--wa-surface); border-bottom: 1px solid var(--wa-border);">
+            <h4 style="color: var(--wa-text);">
+                Chats
+            </h4>
+        </div>
+        <div class="chat-list">
+            {% for conv_id, last_message in all_conversations.items %}
+                <a href="{% url 'chat' conv_id %}" class="chat-list-item {% if conv_id == conversation_id %}active{% endif %}" style="display: flex; align-items: center; padding: 1rem; text-decoration: none; border-bottom: 1px solid var(--wa-border); transition: background 0.2s;">
+                    <div class="chat-list-avatar me-3" style="width: 48px; height: 48px; border-radius: 50%; background: var(--wa-hover); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                        <i class="far fa-user" style="font-size: 24px; color: var(--wa-text-secondary);"></i>
+                    </div>
+                    <div class="chat-list-content px-2" style="flex: 1; min-width: 0; ">
+                        <div class="chat-list-top" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.25rem;">
+                            <h6 class="chat-list-name" style="color: var(--wa-text); font-weight: 600; font-size: 1rem; margin: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                                {{ last_message.sender.username }}
+                            </h6>
+                            <span class="chat-list-time" style="color: var(--wa-text-secondary); font-size: 0.75rem; flex-shrink: 0; margin-left: 0.5rem;">
+                                {{ last_message.created_on|date:"H:i" }}
+                            </span>
+                        </div>
+                        <p class="chat-list-message {% if not is_read_check|get_item:conv_id %}unread{% endif %}" style="color: var(--wa-text-secondary); margin: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                            {{ last_message.message_content|truncatechars:30 }}
+                        </p>
+                    </div>
+                </a>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Chat Main Area -->
+    <div class="chat-main" style="background: var(--wa-secondary); flex-grow: 1;">
+        {% if receiver %}
+        <div class="chat-header" style="background: var(--wa-surface); border-bottom: 1px solid var(--wa-border); padding: 1rem;">
+            <div class="chat-header-user" style="display: flex; align-items: center;">
+                <div class="chat-avatar" style="background: var(--wa-hover); width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 1rem;">
+                    <i class="far fa-user" style="color: var(--wa-text-secondary); font-size: 24px;"></i>
+                </div>
+                <div class="chat-user-info" style="padding-left: 0.5rem;">
+                    <h6 style="color: var(--wa-text); margin: 0 0 0.25rem 0;">{{ receiver.username}}</h6>
+                    {% if receiver.is_online %}
+                    <small style="color: var(--wa-text-secondary);">Online</small>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <div class="messages-container" style="background: var(--wa-secondary); padding: 1rem; height: calc(100vh - 200px); overflow-y: auto;">
+            {% for message in user_messages %}
+            <div class="message-wrapper {% if message.sender == request.user %}sent{% else %}received{% endif %}" style="display: flex; justify-content: {% if message.sender == request.user %}flex-end{% else %}flex-start{% endif %}; margin: 0.5rem 0;">
+                <div class="message-bubble" style="background: {% if message.sender == request.user %}var(--wa-sent){% else %}var(--wa-surface){% endif %}; color: var(--wa-text); max-width: 60%; padding: 0.75rem 1rem; border-radius: 1rem; position: relative;">
+                    {{ message.message_content }}
+                    <span class="message-time" style="color: var(--wa-text-secondary); font-size: 0.75rem; margin-left: 0.5rem;">{{ message.created_on|date:"H:i" }}</span>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="chat-input-container" style="background: var(--wa-surface); border-top: 1px solid var(--wa-border); padding: 1rem;">
+            <form method="post" class="chat-form" style="width: 100%;">
+                {% csrf_token %}
+                <div class="input-group" style="background: var(--wa-hover); border-radius: 25px; padding: 0.5rem;">
+                    <div style="flex: 1; margin-right: 0.5rem; width: 100%;">
+                        {{ message_form }}
+                    </div>
+                    <div class="input-group-append">
+                        <button type="submit" class="btn btn-send" style="background: var(--wa-primary); color: var(--wa-text); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: none;">
+                            <i class="far fa-paper-plane"></i>
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        {% else %}
+        <div class="no-chat-selected" style="background: var(--wa-secondary);">
+            <i class="far fa-comments" style="color: var(--wa-text-secondary);"></i>
+            <h3 style="color: var(--wa-text);">Select a chat to start messaging</h3>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+{%endblock%}

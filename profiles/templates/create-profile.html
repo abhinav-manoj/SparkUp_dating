@@ -1,0 +1,181 @@
+{% extends 'base.html' %} {% block page_title %}Update your Profile{% endblock %} {% load static from static %} 
+<!--CSS for datepicker-->
+{% block css %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/datepicker/0.6.5/datepicker.min.css" integrity="sha256-b88RdwbRJEzRx95nCuuva+hO5ExvXXnpX+78h8DjyOE=" crossorigin="anonymous" />
+<link rel="stylesheet" href="/static/css/custom.css">
+<!-- Remove Google Maps script and add this instead -->
+<style>
+    .datepicker-container ul li{
+        background-color: #202C33;
+        color: #E9EDEF;
+    }
+
+    .datepicker-container ul li:hover{
+        background-color: #E9EDEF;
+        color:#202C33 ;
+    }
+    
+.location-input-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.suggestions-container {
+    position: absolute;
+    width: 100%;
+    max-height: 200px;
+    overflow-y: auto;
+    background: var(--wa-surface);
+    border: 1px solid var(--wa-border);
+    border-radius: 4px;
+    margin-top: 5px;
+    z-index: 1000;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    display: none;
+}
+
+.suggestion-item {
+    padding: 8px 12px;
+    cursor: pointer;
+    border-bottom: 1px solid var(--wa-border);
+    color: var(--wa-text);
+}
+
+.suggestion-item:hover {
+    background-color: var(--wa-hover);
+}
+</style>
+{% endblock %} 
+
+{% block content %}
+<!--Profile details form-->
+<section class="profile-card-container">
+    <div class="card-container card-margin-top">
+        <div class="card-form card">
+            <div class="card-form-container">
+                <h3>Profile Details</h3>
+                <hr>
+                <p class="card-form-subtitle">Customise your public profile</p>
+                <p class="card-form-description">This is your opportunity to let your personality shine. A well crafted profile can increase your engagement 4x so try to make it an honest expression of who you are!</p>
+                <form class="create-profile-form standard-form" method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <div class="location-input-wrapper">
+                            <label for="location-input">Location:</label>
+                            <input 
+                                type="text" 
+                                id="location-input" 
+                                name="location"
+                                class="form-control"
+                                placeholder="Enter your location"
+                                autocomplete="off"
+                                value="{{ location }}"
+                                required
+                            >
+                            <input type="hidden" name="citylat" id="citylat-input" value="{{ citylat }}">
+                            <input type="hidden" name="citylong" id="citylong-input" value="{{ citylong }}">
+                            <div id="location-suggestions" class="suggestions-container"></div>
+                        </div>
+                        {{ profile_form.as_p }}
+                    </div>
+                    <!--Profile photos form-->
+                    <div class="form-group">
+                        <label class="form-label">Profile Photos: </label>
+                        {{ formset.management_form }}
+                        <div class="profile-form-container">
+                            {% for form in formset %}
+                            <div id="field_{{form.id.id_for_label}}" class="profile-photo-container">
+                                <div {% if not form.initial.image %}style="display: none;" {% endif %} class="profile-delete-icon-container">
+                                    <i onclick="delete_profile_photo( event, 'field_{{form.id.id_for_label}}' )" class="far fa-trash-alt"></i>
+                                </div>
+                                <div class="form-group">
+                                    {{form}}
+                                </div>
+                                <div class="profile-photo-overlay">
+                                    <div class="profile-icon-container-absolute">
+                                        <div class="profile-icon-container-flex" style="background-color: #161d22; color: #E9EDEF;">
+                                            <i class="fas fa-plus"></i>
+                                        </div>
+                                    </div>
+                                    {% if form.initial.image %}
+                                    <div class="profile-photo-image" style="background-image: url({{form.initial.image.url}})"></div>
+                                    {% else %}
+                                    <div class="profile-photo-image" style="background-image: none"></div>
+                                    {% endif %}
+                                </div>
+
+                                {% for hidden in form %} {% if not 'image' in hidden.auto_id %}
+                                <input hidden class="delete-hidden-input" type="checkbox" name="delete" value="{{ hidden.value }}"> {% endif %} {% endfor %}
+
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="standard-form-submit">
+                        <input type="submit" value="UPDATE" class="submit-wide submit-success btn btn-primary" name="message_submit">
+                        <img class="loading-image" src="{% static 'temp/34-1.gif' %}"></img>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %} {% block js %}
+<!-- Location suggestions script -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const input = document.getElementById('location-input');
+        const suggestionsContainer = document.getElementById('location-suggestions');
+        const latInput = document.getElementById('citylat-input');
+        const longInput = document.getElementById('citylong-input');
+        let timeoutId;
+
+        input.addEventListener('input', function() {
+            clearTimeout(timeoutId);
+            const searchText = this.value;
+
+            timeoutId = setTimeout(() => {
+                if (searchText.length >= 3) {
+                    fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(searchText)}&limit=5`)
+                        .then(response => response.json())
+                        .then(data => {
+                            suggestionsContainer.style.display = 'block';
+                            suggestionsContainer.innerHTML = '';
+                            
+                            data.forEach(place => {
+                                const div = document.createElement('div');
+                                div.className = 'suggestion-item';
+                                div.textContent = place.display_name;
+                                
+                                div.addEventListener('click', () => {
+                                    input.value = place.display_name;
+                                    latInput.value = place.lat;
+                                    longInput.value = place.lon;
+                                    suggestionsContainer.style.display = 'none';
+                                });
+                                
+                                suggestionsContainer.appendChild(div);
+                            });
+                        })
+                        .catch(error => {
+                            console.error('Error fetching locations:', error);
+                        });
+                } else {
+                    suggestionsContainer.style.display = 'none';
+                }
+            }, 300);
+        });
+
+        // Close suggestions when clicking outside
+        document.addEventListener('click', function(e) {
+            if (!input.contains(e.target) && !suggestionsContainer.contains(e.target)) {
+                suggestionsContainer.style.display = 'none';
+            }
+        });
+    });
+</script>
+
+<!-- Keep your datepicker script -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/datepicker/0.6.5/datepicker.min.js" integrity="sha256-/7FLTdzP6CfC1VBAj/rsp3Rinuuu9leMRGd354hvk0k=" crossorigin="anonymous"></script>
+{% endblock %}

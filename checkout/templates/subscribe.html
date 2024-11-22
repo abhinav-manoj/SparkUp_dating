@@ -1,0 +1,141 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block page_title %}Subscribe{% endblock %}
+
+{% block content %}
+<section class="subscriptions-container">
+    <!--Incentives to subscribe-->
+    <h1 class="quick-match-heading">JOIN PREMIUM</h1>
+    <div class="subscription-page-subtitle">
+        <p><i class="far fa-comment-alt"></i> SEND UNLIMITED MESSAGES</p>
+        <p><i class="fas fa-eye"></i> SEE WHO'S VIEWED YOUR PROFILE</p>
+        <p><i class="far fa-star"></i> ACCESS NEW FEATURES FIRST</p>
+    </div>
+    <!--Plan options-->
+    <div class="subscription-modal-container">
+        <div class="subscription-modal subscription-modal-1 modal-content card-container">
+            <div class="card-form card" style="background-color: #1F2C34; color: #E9EDEF; transition: transform 0.2s, box-shadow 0.2s; cursor: pointer;" onmouseover="this.style.transform='scale(1.02)'; this.style.boxShadow='0 8px 16px rgba(0,0,0,0.2)'" onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='none'">
+                <div class="card-form-container">
+                    <h3 class="inactive-subscription-option no-incentive-badge-title" style="color: #E9EDEF;">1 MONTH</h3>
+                    <hr class="inactive-subscription-option" style="border-color: #2A3942;">
+                    <h4 class="subscription-price" style="color: #00A884;">£24.99<span style="color: #8696A0;"> per month</span></h4>
+                    <p class="subscription-subtitle" style="color: #8696A0;">Billed as £24.99 every month</p>
+                    <button data-price="£24.99" data-plan="plan_F5eyGdYCvZPtON" class="inactive-subscription-option subscription-button btn" style="background-color: #00A884; color: #E9EDEF; border: none; transition: all 0.2s;" onmouseover="this.style.backgroundColor='#008f6f'" onmouseout="this.style.backgroundColor='#00A884'" onmousedown="this.style.transform='scale(0.95)'" onmouseup="this.style.transform='scale(1)'">SELECT</button>
+                </div>
+            </div>
+        </div>
+        <div class="subscription-modal subscription-modal-3 modal-content card-container">
+            <div class="card-form card" style="background-color: #1F2C34; color: #E9EDEF; transition: transform 0.2s, box-shadow 0.2s; cursor: pointer;" onmouseover="this.style.transform='scale(1.02)'; this.style.boxShadow='0 8px 16px rgba(0,0,0,0.2)'" onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='none'">
+                <div class="card-form-container">
+                    <h3 style="color: #E9EDEF;">3 MONTHS</h3>
+                    <div class="incentive-badge btn" style="background-color: #00A884; color: #E9EDEF; border: none;">MOST POPULAR</div>
+                    <hr style="border-color: #2A3942;">
+                    <h4 class="subscription-price" style="color: #00A884;">£14.99<span style="color: #8696A0;"> per month</span></h4>
+                    <p class="subscription-subtitle" style="color: #8696A0;">Billed as £44.99 every 3 months</p>
+                    <button data-price="£44.99" data-plan="plan_F5ey2nnZwy5v8Q" class="subscription-button btn" style="background-color: #00A884; color: #E9EDEF; border: none; transition: all 0.2s;" onmouseover="this.style.backgroundColor='#008f6f'" onmouseout="this.style.backgroundColor='#00A884'" onmousedown="this.style.transform='scale(0.95)'" onmouseup="this.style.transform='scale(1)'">SELECT</button>
+                </div>
+            </div>
+        </div>
+        <div class="subscription-modal subscription-modal-6 modal-content card-container">
+            <div class="card-form card" style="background-color: #1F2C34; color: #E9EDEF; transition: transform 0.2s, box-shadow 0.2s; cursor: pointer;" onmouseover="this.style.transform='scale(1.02)'; this.style.boxShadow='0 8px 16px rgba(0,0,0,0.2)'" onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='none'">
+                <div class="card-form-container">
+                    <h3 class="inactive-subscription-option" style="color: #E9EDEF;">6 MONTHS</h3>
+                    <div class="incentive-badge btn" style="background-color: #00A884; color: #E9EDEF; border: none;">BEST VALUE</div>
+                    <hr class="inactive-subscription-option" style="border-color: #2A3942;">
+                    <h4 class="subscription-price" style="color: #00A884;">£12.49<span style="color: #8696A0;"> per month</span></h4>
+                    <p class="subscription-subtitle" style="color: #8696A0;">Billed as £74.99 every 6 months</p>
+                    <button data-price="£74.99" data-plan="plan_F5eyNlWXHig7YB" class="inactive-subscription-option subscription-button btn" style="background-color: #00A884; color: #E9EDEF; border: none; transition: all 0.2s;" onmouseover="this.style.backgroundColor='#008f6f'" onmouseout="this.style.backgroundColor='#00A884'" onmousedown="this.style.transform='scale(0.95)'" onmouseup="this.style.transform='scale(1)'">SELECT</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Display order summary for the selected plan -->
+<div class="card-container subscription-card-container">
+    <div class="card-form card">
+        <div class="card-form-container">
+            <h3 class="billing-title">Order Summary</h3>
+            <hr>
+            <p>SELECTED PLAN: <span class="plan-total">3 MONTHS</span></p>
+            <p>TOTAL: <span class="cost-total">£44.99</span></p>
+            <!-- PayPal Button -->
+            <div id="paypal-button-container" style="display: flex; justify-content: center; align-items: center;"></div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block js %}
+<!-- PayPal SDK -->
+<script src="https://www.paypal.com/sdk/js?client-id=AZJceZ2uCtsN2bKd8ktV7bYSokxu29HrX65dQBlRQEEQfHCbH6IgP_70Wh3T4plHUJjg1ABEhviVjZyg&currency=GBP"></script>
+
+<script>
+    // Store selected plan when user clicks a plan button
+    document.querySelectorAll('.subscription-button').forEach(button => {
+        button.addEventListener('click', function() {
+            const planElement = this.closest('.card-form-container').querySelector('h3');
+            const selectedPlan = planElement.textContent.trim();
+            
+            // Store selected plan in session using fetch
+            fetch('/checkout/store-plan/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCookie('csrftoken')
+                },
+                body: JSON.stringify({
+                    plan: selectedPlan
+                })
+            });
+        });
+    });
+
+    // Render the PayPal button
+    paypal.Buttons({
+        createOrder: function(data, actions) {
+            const totalAmount = document.querySelector('.cost-total').textContent.replace('£', '');
+            const planDescription = document.querySelector('.plan-total').textContent + " Subscription Plan";
+            
+            return actions.order.create({
+                purchase_units: [{
+                    amount: {
+                        value: totalAmount,
+                        currency_code: 'GBP'
+                    },
+                    description: planDescription
+                }]
+            });
+        },
+        onApprove: function(data, actions) {
+            return actions.order.capture().then(function(details) {
+                // Show loading state
+                document.body.style.cursor = 'wait';
+                window.location.href = "{% url 'payment_success' %}";
+            });
+        },
+        onError: function(err) {
+            console.error('PayPal error:', err);
+            alert('There was an error processing your payment.');
+        }
+    }).render('#paypal-button-container');
+
+    // Helper function to get CSRF token
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+</script>
+
+{% endblock %}

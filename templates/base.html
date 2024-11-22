@@ -1,0 +1,286 @@
+{% load static from static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="shortcut icon" type="image/png" href="{% static 'temp/favicon.png' %}"/>
+    {% block css %}{% endblock %}
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" type="text/css" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" type="text/css" />
+    <link href="{% static 'css/instagram-style.css' %}" rel="stylesheet">
+    <title>{% block page_title %}{% endblock %}</title>
+    <style>
+        :root {
+            --wa-primary: #00A884;          /* WhatsApp green */
+            --wa-secondary: #111B21;        /* Dark background */
+            --wa-surface: #202C33;          /* Chat background */
+            --wa-text: #E9EDEF;            /* Primary text */
+            --wa-text-secondary: #8696A0;   /* Secondary text */
+            --wa-sent: #005C4B;            /* Sent message background */
+            --wa-received: #202C33;        /* Received message background */
+            --wa-border: #2A3942;          /* Borders */
+            --wa-hover: #2A3942;           /* Hover state */
+            --wa-success: #00A884;         /* Success messages */
+            --wa-error: #F15C6D;           /* Error messages */
+        }
+        
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--wa-secondary);
+            color: var(--wa-text);
+            padding-top: 70px; /* Added to account for fixed navbar */
+        }
+        
+        .navbar {
+            background: var(--wa-surface);
+            border-bottom: 1px solid var(--wa-border);
+            padding: 8px 16px;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1030;
+        }
+        
+        .nav-link {
+            color: var(--wa-text) !important;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            padding: 8px 16px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .nav-link:hover {
+            color: var(--wa-primary) !important;
+            background-color: var(--wa-hover);
+            border-radius: 8px;
+        }
+        
+        .nav-icon {
+            display: flex;
+            align-items: center;
+            margin: 0 8px;
+        }
+        
+        .nav-icon i {
+            font-size: 1.5rem;
+            color: var(--wa-text);
+            margin-right: 8px;
+        }
+        
+        .nav-icon p {
+            margin: 0;
+        }
+        
+        .toast-container {
+            position: fixed;
+            top: 90px; /* Adjusted to be below fixed navbar */
+            right: 20px;
+            z-index: 1050;
+        }
+        
+        .toast {
+            background: var(--wa-surface);
+            border: 1px solid var(--wa-border);
+            border-radius: 8px;
+            color: var(--wa-text);
+        }
+        
+        .toast-header {
+            background: var(--wa-surface);
+            color: var(--wa-text);
+            border-bottom: 1px solid var(--wa-border);
+        }
+        
+        .footer-curve {
+            background: var(--wa-surface);
+            border-top: 1px solid var(--wa-border);
+        }
+        
+        .footer-row-bottom ul li a {
+            color: var(--wa-text);
+            font-size: 1.5rem;
+            margin: 0 15px;
+            transition: all 0.2s ease;
+        }
+        
+        .footer-row-bottom ul li a:hover {
+            color: var(--wa-primary);
+        }
+        
+        .brand-footer {
+            color: var(--wa-text-secondary);
+        }
+        
+        .new-engagement:after {
+            background: var(--wa-primary);
+        }
+        
+        /* WhatsApp-style buttons */
+        .btn-primary {
+            background-color: var(--wa-primary);
+            border: none;
+            border-radius: 8px;
+            padding: 8px 16px;
+        }
+        
+        .btn-primary:hover {
+            background-color: #008f6f;
+        }
+        
+        /* Card styling */
+        .card {
+            background: var(--wa-surface);
+            border: 1px solid var(--wa-border);
+            border-radius: 8px;
+        }
+
+        /* Navbar layout improvements */
+        .navbar-nav {
+            align-items: center;
+        }
+
+        .navbar-collapse {
+            justify-content: space-between;
+        }
+
+        @media (max-width: 991px) {
+            .navbar-options-hidden {
+                background: var(--wa-surface);
+                padding: 15px;
+                border-radius: 8px;
+                margin-top: 10px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!--Page ref used in JS file-->
+    {% if page_ref %}
+    <div id="page-ref" data-page-ref="{{page_ref}}"></div>
+    {% endif %}
+    <div id="page-container">
+    <!--Navbar-->
+    <nav class="navbar navbar-expand-lg">
+        <a class="nav-icon brand-icon" href="{% url 'index' %}">
+            <i class="fas fa-bolt" style="color: var(--wa-primary); font-size: 2.2rem;"></i>
+        </a>
+
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon">
+                <i class="fas fa-bars" style="color: var(--wa-primary); font-size: 1.5rem;"></i>
+            </span>
+        </button>
+  
+      <div class="navbar-options-hidden collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="d-lg-none d-xl-none navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="{% if new_message%}new-engagement{%endif%} nav-link" href="{% url 'chat_home' %}"><p>CHAT</p></a>
+                </li>
+                <li class="nav-item">
+                    <a class="{% if new_wink%}new-engagement{%endif%} nav-link" href="{% url 'winks' %}"><p>WINKS</p></a>
+                </li>
+                <li class="nav-item">
+                    <a class="{% if new_view%}new-engagement{%endif%} nav-link" href="{% url 'views' %}"><p>VIEWS</p></a>
+                </li>
+                <li class="nav-item">
+                    {% if request.user.is_authenticated %}
+                    <a class="nav-link" href="{% url 'member_profile' request.user.id %}"><p>PROFILE</p></a>
+                    {% else %}
+                    <a class="nav-link" href="{% url 'register' %}"><p>PROFILE</p></a>
+                    {% endif %}
+                </li>
+            </ul>
+            
+            <ul class="d-none d-lg-flex nav navbar-nav">
+                <li class="nav-item nav-icon">
+                    <a class="{% if new_message %}new-engagement{%endif%}" href="{% url 'chat_home' %}"><i class="far fa-comment-alt"></i><p>Chat</p></a>
+                </li>
+                <li class="nav-item nav-icon">
+                    <a class="{% if new_wink %}new-engagement{%endif%}" href="{% url 'winks' %}"><i class="far fa-smile-wink"></i><p>Winks</p></a>
+                </li>
+                <li class="nav-item nav-icon">
+                    <a class="{% if new_view %}new-engagement{%endif%}" href="{% url 'views' %}"><i class="fas fa-eye"></i><p>Views</p></a>
+                </li>
+                <li class="profile-icon nav-item nav-icon">
+                {% if request.user.is_authenticated %}
+                <a href="{% url 'member_profile' request.user.id %}"><i class="far fa-user"></i><p>Profile</p></a>
+                {% else %}
+                <a href="{% url 'register' %}"><i class="far fa-user"></i><p>Profile</p></a>
+                {% endif %}
+                </li>
+            </ul>
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'index' %}">HOME</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'search' %}">SEARCH</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'account' %}">ACCOUNT</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    
+    <!--Notifications-->
+    <div class="toast-container">
+    {% for message in messages %}
+        <div data-delay="4000" class="toast fade show">
+            <div class="toast-header">
+                <strong class="mr-auto"><i class="fa fa-globe"></i> Attention</strong>
+                <button type="button" class="ml-2 mb-1 close" data-dismiss="toast">&times;</button>
+            </div>
+            <div class="toast-body">
+                {{ message }}
+            </div>
+        </div>
+    {% endfor %}
+    </div>
+
+    {% block content %} {% endblock %}
+    
+    <!--Footer-->
+    <div class="footer-spacer">
+    </div>
+    <footer class="footer-curve">
+        <div class="row footer-row-bottom" style="background-color: var(--wa-surface);">
+            <div class="col-xs-12 col-md-6">
+                <ul>
+                    <li><a href="https://facebook.com" target="_blank"><i class="fab fa-facebook-f"></i></a></li>
+                    <li><a href="https://instagram.com" target="_blank"><i class="fab fa-instagram"></i></a></li>
+                    <li><a href="https://twitter.com" target="_blank"><i class="fab fa-twitter"></i></a></li>
+                    <li><a href="https://snapchat.com" target="_blank"><i class="fab fa-snapchat-ghost"></i></a></li>
+                </ul>
+                <p class="brand-footer">World's Best Dating Site, 2024</p>
+            </div>
+            <div class="footer-info-text col-xs-12 col-md-6">
+                <p>Welcome to the world's best dating site. Enjoy browsing singles using our
+                advanced features. Find love, lust and romance the easy way.
+                <br>
+                World's Best Dating Site©
+                </p>
+            </div>
+        </div>
+    </footer>
+    </div>
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script type="text/javascript" src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script>
+    </script>
+    {% block js %}
+    
+    {% endblock %}
+    <script type="text/javascript" src="{% static 'js/script.js' %}"></script>
+</body>
+
+</html>

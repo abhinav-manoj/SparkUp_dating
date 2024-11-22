@@ -1,0 +1,37 @@
+{% block extra_js %}
+<script src="https://js.stripe.com/v3/"></script>
+<script>
+    // Initialize Stripe with your publishable key
+    const stripe = Stripe('{{ publishable }}');
+    
+    $(document).ready(function() {
+        $("#payment-form").submit(function(event) {
+            event.preventDefault();
+            var form = $(this);
+            var card = {
+                number: $('#id_credit_card_number').val(),
+                exp_month: $('#id_expiry_month').val(),
+                exp_year: $('#id_expiry_year').val(),
+                cvc: $('#id_cvv').val()
+            };
+            
+            // Disable the submit button to prevent repeated clicks
+            form.find('button').prop('disabled', true);
+            
+            Stripe.createToken(card, function(status, response) {
+                if (response.error) {
+                    // Show error in payment form
+                    $('#stripe-error-message').text(response.error.message);
+                    form.find('button').prop('disabled', false);
+                } else {
+                    // Insert the token into the form so it gets submitted to the server
+                    $('#id_stripe_id').val(response.id);
+                    console.log("Token created:", response.id); // Debug log
+                    form.get(0).submit();
+                }
+            });
+            return false;
+        });
+    });
+</script>
+{% endblock %} 

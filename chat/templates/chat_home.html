@@ -1,0 +1,80 @@
+{% extends 'base.html' %} {% load static from static %} {% load chatextras %} {% block page_title %}Chat Home{% endblock %} {% block content %}
+
+<div class="message-page container" style="background-color: var(--wa-secondary); min-height: 90vh; padding: 2rem 0;">
+    <div class="row justify-content-center">
+        <!--All conversations-->
+        {% if all_conversations.items %}
+        <div class="card-container col-xs-12 col-lg-4 conversation-list">
+            <div class="card h-100" style="background: var(--wa-surface); border-color: var(--wa-border);">
+                <div class="chat-list-header p-3" style="background: var(--wa-surface); border-bottom: 1px solid var(--wa-border);">
+                    <h4 class="m-0" style="color: var(--wa-text);">Chats</h4>
+                </div>
+                <div class="chat-list p-0">
+                    {% for k, v in all_conversations.items %}
+                    <li class="chat-list-item {% if conversation_id == k %}active{% endif %} {% if not is_read_check|get_item:k %}unread{% endif %}" data-id="{{k}}" style="background: var(--wa-surface); border-bottom: 1px solid var(--wa-border); list-style: none;">
+                        <a href="{% url 'chat' k %}" class="chat-list-link d-flex align-items-center p-3" style="color: var(--wa-text); text-decoration: none;">
+                            <div class="chat-list-avatar me-4">
+                                {% if v.receiver == request.user %}
+                                    {% if v.sender.profileimage_set.first.is_verified == "APPROVED" %}
+                                        <div class="avatar-image rounded-circle" style="background-image: url({{ MEDIA_URL }}{{ v.sender.profileimage_set.first.image}}); width: 48px; height: 48px; background-size: cover;"></div>
+                                    {% else %}
+                                        <i class="far fa-user fa-2x"></i>
+                                    {% endif %}
+                                {% else %}
+                                    {% if v.receiver.profileimage_set.first.is_verified == "APPROVED" %}
+                                        <div class="avatar-image rounded-circle" style="background-image: url({{ MEDIA_URL }}{{ v.receiver.profileimage_set.first.image}}); width: 48px; height: 48px; background-size: cover;"></div>
+                                    {% else %}
+                                        <i class="far fa-user fa-2x"></i>
+                                    {% endif %}
+                                {% endif %}
+                            </div>
+                            <div class="chat-list-content flex-grow-1 ms-2 px-2">
+                                <div class="chat-list-top d-flex justify-content-between align-items-center mb-1">
+                                    <h6 class="chat-list-name m-0">
+                                        {% if v.receiver == request.user %}
+                                            {{v.sender}}
+                                        {% else %}
+                                            {{v.receiver}}
+                                        {% endif %}
+                                    </h6>
+                                    <span class="chat-list-time small">{{v.created_on|date:"H:i"}}</span>
+                                </div>
+                                <p class="chat-list-message mb-0 {% if not is_read_check|get_item:k %}unread{% endif %}" style="opacity: 0.8;">
+                                    {{ v.message_content|truncatechars:30 }}
+                                </p>
+                            </div>
+                        </a>
+                    </li>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <!--No messages displayed as conversation has not been selected-->
+        <div class="card-container col-lg-8 message-box">
+            <div class="card h-100" style="background: var(--wa-surface); border-color: var(--wa-border);">
+                <div class="message-box-content message-box-empty d-flex align-items-center justify-content-center" style="background: var(--wa-secondary); min-height: 400px;">
+                    <div class="empty-state text-center">
+                        <i class="far fa-comments fa-4x mb-3" style="color: var(--wa-text-secondary);"></i>
+                        <h3 style="color: var(--wa-text);">Select a Conversation</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <!--No conversations have been created-->
+        <div class="card-container col-lg-8 message-box mx-auto">
+            <div class="card" style="background: var(--wa-surface); border-color: var(--wa-border);">
+                <div class="message-box-content message-box-empty d-flex align-items-center justify-content-center" style="background: var(--wa-secondary); min-height: 400px;">
+                    <div class="empty-state text-center">
+                        <i class="far fa-comments fa-4x mb-3" style="color: var(--wa-text-secondary);"></i>
+                        <h3 class="mb-4" style="color: var(--wa-text);">No Conversations</h3>
+                        <a href="{% url 'index' %}" class="btn px-4 py-2" style="background: var(--wa-primary); color: var(--wa-text);">Start Something Special</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{%endblock%}

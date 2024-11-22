@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container text-center mt-5">
+    <div class="card p-5" style="background: var(--wa-surface); border-color: var(--wa-border);">
+        <h1 style="color: var(--wa-primary);"><i class="fas fa-check-circle"></i></h1>
+        <h2 style="color: var(--wa-text);">Payment Successful!</h2>
+        <p class="lead" style="color: var(--wa-text);">Thank you for subscribing to our premium service.</p>
+        <div class="alert" style="background-color: var(--wa-primary); color: var(--wa-text);">
+            Your account has been upgraded to premium status!
+        </div>
+        <p style="color: var(--wa-text);">You now have access to all premium features:</p>
+        <ul class="list-unstyled">
+            <li style="color: var(--wa-text);">
+                <i class="far fa-comment-alt" style="color: var(--wa-primary);"></i> Unlimited Messages
+            </li>
+            <li style="color: var(--wa-text);">
+                <i class="fas fa-eye" style="color: var(--wa-primary);"></i> Profile View Tracking
+            </li>
+            <li style="color: var(--wa-text);">
+                <i class="far fa-star" style="color: var(--wa-primary);"></i> Early Access to New Features
+            </li>
+        </ul>
+        <a href="{% url 'index' %}" class="btn mt-3" style="background-color: var(--wa-primary); color: var(--wa-text);">
+            Return to Homepage
+        </a>
+    </div>
+</div>
+{% endblock %} 
